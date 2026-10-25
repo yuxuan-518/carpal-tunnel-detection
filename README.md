@@ -6,6 +6,18 @@ An embedded systems project developed by **Shaoxuan Xiong and Alex Wang** during
 
 The project is an educational prototype for posture awareness. Its name describes the original motivation; the implementation does not diagnose carpal tunnel syndrome or establish a medically validated posture threshold.
 
+## Prototype and demo
+
+![Assembled prototype with an Arduino Uno, two MPU6050 sensors, a breadboard, and LEDs](docs/media/prototype.jpg)
+
+*The assembled hardware prototype, showing the two sensor modules and the Arduino-based feedback circuit.*
+
+### Demonstration video
+
+https://github.com/user-attachments/assets/8a992d38-2888-47a8-a3be-2d1d7a27eaec
+
+*Prototype demonstration. Play the video directly on this page.*
+
 ## What the current implementation does
 
 - Communicates with two MPU6050 sensors on the same I²C bus, using addresses `0x68` and `0x69`.
