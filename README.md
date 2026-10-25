@@ -18,6 +18,12 @@ https://github.com/user-attachments/assets/8a992d38-2888-47a8-a3be-2d1d7a27eaec
 
 *Prototype demonstration. Play the video directly on this page.*
 
+## Why two MPU6050 sensors?
+
+A sensor on the hand alone cannot provide a direct reference for the forearm: its readings can change both when the wrist bends and when the whole arm moves. Shaoxuan proposed placing one MPU6050 on the hand and another on the forearm so that the system could compare the two body segments.
+
+The design goal was to focus on changes in the hand relative to the forearm, reducing sensitivity to changes in the whole arm's orientation. The prototype implements a simple comparison using the two acceleration vectors. This is a starting point for relative-posture feedback; sensor alignment, movement-induced acceleration, and threshold selection still affect its behavior.
+
 ## What the current implementation does
 
 - Communicates with two MPU6050 sensors on the same I²C bus, using addresses `0x68` and `0x69`.
@@ -27,6 +33,16 @@ https://github.com/user-attachments/assets/8a992d38-2888-47a8-a3be-2d1d7a27eaec
 - Runs on the Arduino Uno V3's ATmega328P using AVR C and direct peripheral/register control.
 
 The current [main program](driver/main.c) uses the **raw acceleration-vector dot product**, rather than the normalized angle calculation available in the vector library. The threshold is a prototype setting, not an angle in degrees; movement and acceleration magnitude can also affect the result.
+
+## Prototype evaluation and findings
+
+The demonstration video documents a short, qualitative evaluation of the wearable prototype and summarizes what we learned during development:
+
+- **Wearable demonstration (opening 8 seconds):** the assembled device is secured to the hand and forearm, and the wearer changes wrist and arm position. This shows the physical setup in use; the clip does not provide measured wrist angles or a controlled comparison of wrist-only and whole-arm movements.
+- **Integration errors (around 21 seconds):** our project presentation reports that integrating inaccurate sensor readings caused the estimated position to drift. We moved from the Simpson's-rule integration experiments to comparing two 3D vectors, avoiding the need to reconstruct posture from a history of integrated readings.
+- **Sensor noise and next steps (around 27 seconds):** the presentation identifies MPU6050 noise and the limitations of an acceleration-only dot-product comparison. Combining accelerometer and gyroscope data through sensor fusion, such as an extended Kalman filter, was proposed as a future improvement; it is not implemented in the current main program.
+
+These are qualitative prototype findings. The demonstration does not establish an accuracy percentage, false-trigger rate, or reliable trigger angle. A useful next evaluation would compare wrist bending with whole-arm movement while recording sensor values and LED states under consistent mounting conditions.
 
 ## How the project developed
 
